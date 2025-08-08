@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pengambilan Racepack Fun Run</title>
+<style>
+body { font-family: sans-serif; padding: 20px; }
+table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+th { background-color: #f58220; color: white; }
+input, button { padding: 5px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<h2>Data Pengambilan Racepack - Fun Run</h2>
+<input type="text" id="searchInput" placeholder="Cari Nama atau BIB..." onkeyup="filterTable()">
+
+<table id="dataTable">
+<thead>
+<tr>
+<th>No BIB</th>
+<th>Nama Peserta</th>
+<th>Size Baju</th>
+<th>Barcode</th>
+<th>Status</th>
+<th>Nama Staff</th>
+<th>Nama Pengambil</th>
+<th>No HP</th>
+<th>ID Card</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<script>
+const sheetURL = https://script.google.com/macros/s/AKfycbx5vGYEsJsRnCXPYd_VGCcMA8qeoUTrNXVjBSvuQRUEFaAjMnyPt90Fkqdi3MFdOYg9/exec; // Ganti dengan link Web App dari Google Script
+
+fetch(sheetURL)
+.then(res => res.json())
+.then(data => {
+const tbody = document.querySelector("#dataTable tbody");
+data.forEach(row => {
+const tr = document.createElement("tr");
+tr.innerHTML = `
+<td>${row["No BIB"]}</td>
+<td>${row["Nama Peserta"]}</td>
+<td>${row["Size Baju"]}</td>
+<td>${row["Barcode"] || "-"}</td>
+<td>${row["Status"]}</td>
+<td>${row["Nama Staff"] || "-"}</td>
+<td>${row["Nama Pengambil"] || "-"}</td>
+<td>${row["No. HP Pengambil"] || "-"}</td>
+<td>${row["ID Card Pengambil"] || "-"}</td>
+<td>${row["Keterangan"] || "-"}</td>
+`;
+tbody.appendChild(tr);
+});
+});
+
+function filterTable() {
+const input = document.getElementById("searchInput").value.toUpperCase();
+const rows = document.querySelectorAll("#dataTable tbody tr");
+rows.forEach(row => {
+const text = row.innerText.toUpperCase();
+row.style.display = text.includes(input) ? "" : "none";
+});
+}
+</script>
+</body>
+</html>
